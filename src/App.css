@@ -7,12 +7,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,15 +18,27 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Your updated App.css with modified hero image styles */
+
+/* Include the Poppins font-family for the whole document */
+body {
+  font-family: "Poppins", Arial, sans-serif;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navbar {
+  padding: 5rem 0; /* Padding 5x top and bottom */
+  background-color: white; /* White background */
+  color: #777; /* Grey font color */
+  /* Rest of your navbar styles */
+}
+
+.hero-image {
+  width: 100%;
+  max-height: 400px; /* Set a maximum height for the hero image */
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintain the aspect ratio and cover the entire container */
 }
