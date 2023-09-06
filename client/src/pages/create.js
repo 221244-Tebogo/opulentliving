@@ -29,7 +29,7 @@ import axios from 'axios';
 //     }
 
 function CREATE() {
-    const [name, setName ] = useState();
+    const [title, setTitle ] = useState();
     const [type, setType ] = useState();
     const [size, setSize ] = useState();
     const [price, setPrice ] = useState();
@@ -37,16 +37,16 @@ function CREATE() {
 
     const handleSubmit = () => { //handleSubmit onButton Click
         const payload = { //Schema layout how data is presented in the database
-            name: name,
+            title: title,
             type: type,
             size: size,
             price: price,
             quantity: quantity
         }
     
-        axios.post('http://localhost:5001/api/products', payload);  
-        then {
-            const response = await axios.post('YOUR_API_ENDPOINT', formData);
+        //axios.post('http://localhost:5001/api/products', payload)
+        try {
+            const response = axios.post('http://localhost:5001/api/sofas', payload);
             console.log('Order submitted successfully:', response.data); //success response here
         } catch (error) {
             console.error('Error submitting data:', error); //handle error here
@@ -81,13 +81,13 @@ return (
 
     <Container> 
         <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
+            <Form.Group controlId="title">
+            <Form.Label>Title</Form.Label>
                 <Form.Control
                 type="text"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                name="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required
                 />
             </Form.Group>
@@ -137,9 +137,8 @@ return (
             />
             </Form.Group>
 
-      </Container>
+     </Container> 
     </div>
-  )
-}
+)}
 
-export default create
+export default CREATE
