@@ -1,4 +1,5 @@
-// import React from 'react'
+import { Form, Button, Container } from 'react-bootstrap';
+import axios from 'axios';
 
 // const [form.Data, setFormData] = useState({
 //     brand: '',
@@ -33,27 +34,47 @@ function CREATE() {
     const [size, setSize ] = useState();
     const [price, setPrice ] = useState();
     const [quantity, setQuantity ] = useState();
-}
 
-const getName = (e) => {
-    let value = e.target.value;
-    setName(value);
-}
+    const handleSubmit = () => { //handleSubmit onButton Click
+        const payload = { //Schema layout how data is presented in the database
+            name: name,
+            type: type,
+            size: size,
+            price: price,
+            quantity: quantity
+        }
+    
+        axios.post('http://localhost:5001/api/products', payload);  
+        then {
+            const response = await axios.post('YOUR_API_ENDPOINT', formData);
+            console.log('Order submitted successfully:', response.data); //success response here
+        } catch (error) {
+            console.error('Error submitting data:', error); //handle error here
+        }
+    };
+// 
 
-const getType = (e) => {
-    let value = e.target.value;
-    setType(value);
-}
+// const getName = (e) => {
+//     let value = e.target.value;
+//     setName(value);
+// }
 
-const getSize = (e) => {
-    let value = e.target.value;
-    setSize(value);
-}
+// const getType = (e) => {
+//     let value = e.target.value;
+//     setType(value);
+// }
 
-const getQuantity = (e) => {
-    let value = e.target.value;
-    setQuantity(value);
-}
+// const getSize = (e) => {
+//     let value = e.target.value;
+//     setSize(value);
+// }
+
+// const getQuantity = (e) => {
+//     let value = e.target.value;
+//     setQuantity(value);
+// }
+
+
 
 return (
  <div>
@@ -61,36 +82,49 @@ return (
     <Container> 
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="name">
+            <Form.Label>Name</Form.Label>
                 <Form.Control
                 type="text"
                 name="name"
-                value={model}
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
                 />
             </Form.Group>
 
-            <Form.Group controlId="model">
-            <Form.label>Model</Form.label>
+            <Form.Group controlId="type">
+            <Form.Label>Type</Form.Label>
             <Form.Control
             type="text"
-            name="model"
-            value={model}
-            onChange={(e) => setName(e.target.value)}
+            name="type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
             required
             />
             </Form.Group> 
             
-            <Form.Group controlId="type">
-            <Form.label>Type</Form.label>
+            <Form.Group controlId="size">
+            <Form.label>Size</Form.label>
             <Form.Control
             type="text"
-            name="type"
-            value={model}
-            onChange={(e) => setName(e.target.value)}
+            name="size"
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
             required
             />
             </Form.Group>
+
+            <Form.Group controlId="price">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+            type="number"
+            name="quantity"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            />
+            </Form.Group>
+
 
             <Form.Group controlId="quantity">
             <Form.Label>Quantity</Form.Label>
@@ -98,7 +132,7 @@ return (
             type="number"
             name="quantity"
             value={quantity}
-            onChange={(e) => setQuantityx(e.target.value)}
+            onChange={(e) => setQuantity(e.target.value)} //what is this function? please update developer language
             required
             />
             </Form.Group>
