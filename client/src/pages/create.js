@@ -60,26 +60,49 @@ return (
 
     <Container> 
         <Form onSubmit={handleSubmit}>
-            <Form.Group controlled="name">//
+            <Form.Group controlId="name">
                 <Form.Control
                 type="text"
                 name="name"
-                value={FormData.name}
-                onChange={handleChange}
+                value={model}
+                onChange={(e) => setName(e.target.value)}
                 required
                 />
             </Form.Group>
 
-            <Form.Group controlled="model"
+            <Form.Group controlId="model">
             <Form.label>Model</Form.label>
             <Form.Control
             type="text"
             name="model"
-            value={FormData.model}
-            onChange={{(e) => setName(e.target.value}}
-                required
-        />
-        </Form.Group>
+            value={model}
+            onChange={(e) => setName(e.target.value)}
+            required
+            />
+            </Form.Group> 
+            
+            <Form.Group controlId="type">
+            <Form.label>Type</Form.label>
+            <Form.Control
+            type="text"
+            name="type"
+            value={model}
+            onChange={(e) => setName(e.target.value)}
+            required
+            />
+            </Form.Group>
+
+            <Form.Group controlId="quantity">
+            <Form.Label>Quantity</Form.Label>
+            <Form.Control
+            type="number"
+            name="quantity"
+            value={quantity}
+            onChange={(e) => setQuantityx(e.target.value)}
+            required
+            />
+            </Form.Group>
+
       </Container>
     </div>
   )
