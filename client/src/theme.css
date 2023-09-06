@@ -25854,3 +25854,70 @@ product-quickview.loading button .btn-state-loading {
 }
 
 /*! ============ Add any custom styles below this line ================== */
+
+/* Single Product Styling */
+
+.product {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #ddd;
+}
+
+.product__title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.product__name {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.product__prices {
+  margin-top: 10px;
+}
+
+.product__price {
+  font-weight: bold;
+}
+
+.product__single {
+  margin-top: 20px;
+}
+
+.product__single-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.product__buttons {
+  margin-top: 10px;
+}
+
+.product__button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.product__wood-title {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.product__wood-buttons {
+  margin-top: 10px;
+}
+
+.product__wood-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
+}

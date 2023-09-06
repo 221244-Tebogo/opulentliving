@@ -1,4 +1,4 @@
-// models/Product.js
+// models/Products.js
 const mongoose = require('mongoose');
 
 const ProductSchema = mongoose.Schema({
@@ -36,18 +36,7 @@ const ProductSchema = mongoose.Schema({
         ref: 'Category',
         required: true
     }
-    // rating: {
-    //     type: Number,
-    //     default: 0,
-    // },
-    // numbReview: {
-    //     type: Number,
-    //     default: 0,
-    // },
-    // isFeatured: {
-    //     type: Boolean,
-    //     default: false,
-    // },
+   
 });
 
 module.exports = mongoose.model("Product", ProductSchema); //export file
