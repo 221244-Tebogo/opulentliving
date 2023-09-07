@@ -1,50 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Products = () => {
-  const [productName, setProductName] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [productPrice, setProductPrice] = useState('');
+const ProductsList = () => {
+  const products, setProducts] = useState([]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    // Fetch products from the server when the component mounts
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
     try {
-      const response = await axios.post('/api/products', {
-        name: productName,
-        description: productDescription,
-        price: parseFloat(productPrice),
-      });
-      console.log('Product added:', response.data);
-      // Fetch updated product list here and update state
+      const response = await axios.get('http://localhost:3000/api/product/');
+      setProducts(response.data);
     } catch (error) {
-      console.error('Error adding product:', error);
+      console.error('Error fetching products:', error);
     }
   };
 
   return (
     <div>
-      <h1>Add Product</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Product Name"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Product Description"
-          value={productDescription}
-          onChange={(e) => setProductDescription(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Product Price"
-          value={productPrice}
-          onChange={(e) => setProductPrice(e.target.value)}
-        />
-        <button type="submit">Add Product</button>
-      </form>
+      {/* Render your products based on the fetched data */}
+      {products.map((product) => (
+        <div key={product._id}>
+          {/* Render your product components here */}
+        </div>
+      ))}
     </div>
   );
 };

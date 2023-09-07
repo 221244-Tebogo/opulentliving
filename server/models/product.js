@@ -1,4 +1,4 @@
-// models/Products.js
+// models/Product.js
 const mongoose = require('mongoose');
 
 const ProductSchema = mongoose.Schema({
@@ -16,6 +16,7 @@ const ProductSchema = mongoose.Schema({
    },
    image: {
     type: String,
+    required: true, // is this required
     default: ''
    },
    images: []  // TYPE OF ARRAY

@@ -4,17 +4,16 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Home from './Home';
-import Products from './Products'; 
+import AddProductForm from './components/AddProductForm';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
-
 import Footer from './components/Footer';
 
-///import './App.css';
 import './theme.css';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [displayProducts, setDisplayProducts] = useState(false);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -27,16 +26,16 @@ const App = () => {
   return (
     <div className="app">
       <Router>
-        <Navbar />
-    
+        <Navbar setDisplayProducts={setDisplayProducts} />
         <Routes>
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/dashboard" element={<PrivateRoute component={Dashboard} isAuthenticated={isAuthenticated} />} />
-          <Route path="/home" element={<Home />} /> 
-          <Route path="/product" element={<Products />} /> 
+          <Route path="/home" element={<Home />} />
+          <Route path="/AddProductForm" element={<AddProductForm />} />
+
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
-        <Footer />  
+        <Footer />
       </Router>
     </div>
   );

@@ -1,18 +1,58 @@
 const express = require('express');
 const router = express.Router();
-const productsController = require('../controllers/productsController');
+const Product = require('../models/Product');
 
-// Create
-router.post('/admin/products/add', productsController.postAddProduct);
+// Create a new product
+router.postAddProduct = async (req, res) => {
+    try {
+        const product = new Product({
+            name: req.body.name,
+            image: req.body.image,
+            countInStock: req.body.countInStock
+        });
 
-// Read
-router.get('/admin/products', productsController.getAdminProducts);
+        const createdProduct = await product.save();
+        res.status(201).json(createdProduct);
+    } catch (error) {
+        res.status(500).json({ error: 'Product creation failed' });
+    }
+};
 
-// Update
-router.get('/admin/products/edit/:id', productsController.getEditProduct);
-router.post('/admin/products/edit/:id', productsController.postEditProduct);
+// GET ALL PRODUCTS 
+router.get('/api/product/', async (req, res) => {
+    try {
+        const findProduct = await ProductSchema.find();
+        res.json(findProduct);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-// Delete
-router.post('/admin/products/delete/:id', productsController.postDeleteProduct);
+// UPDATE product
+router.put('/api/product/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const updatedProduct = await ProductSchema.findByIdAndUpdate(id, req.body, { new: true });
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.json(updatedProduct);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE product
+router.delete('/api/product/:id', async (req, res) => {
+    try {
+        const deletedProduct = await ProductSchema.findByIdAndDelete(req.params.id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.json(deletedProduct);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router;
