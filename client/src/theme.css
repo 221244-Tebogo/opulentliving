@@ -25904,16 +25904,16 @@ product-quickview.loading button .btn-state-loading {
   cursor: pointer;
 }
 
-.product__wood-title {
+.product__title {
   margin-top: 20px;
   font-weight: bold;
 }
 
-.product__wood-buttons {
+.product__buttons {
   margin-top: 10px;
 }
 
-.product__wood-button {
+.product__button {
   background-color: #007bff;
   color: #fff;
   padding: 5px 10px;
