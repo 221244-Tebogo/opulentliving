@@ -7,6 +7,7 @@ import Home from './Home';
 import AddProductForm from './components/AddProductForm';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
+import Form from './components/form';
 import Footer from './components/Footer';
 
 import './theme.css';
@@ -32,7 +33,7 @@ const App = () => {
           <Route path="/dashboard" element={<PrivateRoute component={Dashboard} isAuthenticated={isAuthenticated} />} />
           <Route path="/home" element={<Home />} />
           <Route path="/AddProductForm" element={<AddProductForm />} />
-
+          <Route path='/form' element={<Form />} />
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
         <Footer />
