@@ -25853,7 +25853,30 @@ product-quickview.loading button .btn-state-loading {
   }
 }
 
-/*! ============ Add any custom styles below this line ================== */
+
+
+/* Navigation CSS*/
+.theme__header {
+  position: absolute;
+  z-index: 5000;
+  width: 100%;
+  background-color: #fbf9f5; 
+  color: #627571; 
+  border-bottom: 1px solid var(--COLOR-NAV-BORDER); 
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.header__inner {
+  width: 100%;
+}
+
+.header__inner--bar {
+  background: var(--COLOR-ANNOUNCEMENT-BG); /* Set background color for inner bar */
+  color: #050b0a; /* Updated text color for inner bar on hover/click */
+  padding: 4px 0;
+}
+
 
 /* Single Product Styling */
 
@@ -25896,7 +25919,7 @@ product-quickview.loading button .btn-state-loading {
 }
 
 .product__button {
-  background-color: #007bff;
+  background-color: #203c38;
   color: #fff;
   padding: 5px 10px;
   border: none;
@@ -25914,10 +25937,396 @@ product-quickview.loading button .btn-state-loading {
 }
 
 .product__button {
-  background-color: #007bff;
+  background-color: #203c38;
   color: #fff;
   padding: 5px 10px;
   border: none;
   margin-right: 10px;
   cursor: pointer;
+}
+
+/* Button CSS */
+.shopify-payment-button .shopify-payment-button__button--unbranded {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  margin: 0;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--BUTTON-RADIUS);
+  font-family: var(--FONT-STACK-ACCENT);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: calc(var(--font-3) * var(--FONT-ADJUST-ACCENT));
+  background-color: #203c38; /* Main color */
+  color: #fff; /* Text color */
+}
+
+.shopify-payment-button .shopify-payment-button__button--unbranded:hover {
+  color: #fff; /* Text color on hover */
+  background-color: #203c38; /* Main color on hover */
+}
+
+/* Dark palette styles */
+.product-section.palette--dark .btn--primary.btn--outline,
+.product-section.palette--dark .btn--outline.shopify-challenge__button,
+.product-section.palette--dark .shopify-payment-button .shopify-payment-button__button--unbranded {
+  --btn-text: var(--INVERSE-PRIMARY);
+  --btn-bg-hover: var(--INVERSE-PRIMARY-FADE);
+}
+
+/* Body copy style */
+p {
+  font-size: 12.33px;
+  font-family: "Harmonia Sans", sans-serif;
+  line-height: 1.5;
+  color: #656565;
+  margin: 0 0 39.44px;
+}
+
+/*headings etc*/
+/* All headings using "Work Sans" font */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Work Sans", sans-serif;
+  font-weight: var(--FONT-WEIGHT-HEADING);
+  letter-spacing: var(--FONT-HEADING-SPACE);
+  text-transform: var(--FONT-HEADING-CAPS);
+}
+
+h1 .strong, h1.strong, h1 strong,
+h2 .strong, h2.strong, h2 strong,
+h3 .strong, h3.strong, h3 strong,
+h4 .strong, h4.strong, h4 strong,
+h5 .strong, h5.strong, h5 strong,
+h6 .strong, h6.strong, h6 strong {
+  font-weight: var(--FONT-WEIGHT-HEADING-BOLD);
+}
+
+h1, .h1 {
+  font-size: calc(var(--font-10) * var(--FONT-ADJUST-HEADING));
+}
+
+h2, .h2 {
+  font-size: calc(var(--font-9) * var(--FONT-ADJUST-HEADING));
+}
+
+h3, .h3 {
+  font-size: calc(var(--font-8) * var(--FONT-ADJUST-HEADING));
+}
+
+h4, .h4 {
+  font-size: calc(var(--font-7) * var(--FONT-ADJUST-HEADING));
+}
+
+h5, .h5 {
+  font-size: calc(var(--font-6) * var(--FONT-ADJUST-HEADING));
+}
+
+h6, .h6 {
+  font-size: calc(var(--font-5) * var(--FONT-ADJUST-HEADING));
+}
+
+/* Other heading styles remain unchanged */
+
+/* Style for h1.product_title */
+h1.product_title {
+  font-size: 33.488px;
+  margin: 0;
+  color: #656565;
+}
+
+/*FORMS styling*/
+
+
+/* ================ Form labels ================ */
+label,
+legend {
+  display: block;
+}
+label.inline,
+legend.inline {
+  display: inline;
+}
+.form-horizontal label.label--hidden, label.label--hidden,
+.form-horizontal legend.label--hidden,
+legend.label--hidden {
+  height: 0;
+  width: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+/* ================ Address and non-float forms ================ */
+.form--standard label,
+.form--standard legend {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: var(--FONT-WEIGHT-BODY-BOLD);
+}
+
+.contact__block {
+  margin: 20px 0;
+  display: block;
+}
+
+.contact__radio,
+.contact__check {
+  display: flex;
+  align-items: center;
+}
+
+label[for] {
+  cursor: pointer;
+}
+
+.label-hint {
+  color: #999;
+}
+
+/* ================ Horizontal Form ================ */
+form.form-horizontal,
+.form-horizontal {
+  margin-bottom: 0;
+}
+form.form-horizontal input[type=text],
+form.form-horizontal input[type=search],
+form.form-horizontal input[type=password],
+form.form-horizontal input[type=email],
+form.form-horizontal input[type=file],
+form.form-horizontal input[type=number],
+form.form-horizontal input[type=tel],
+form.form-horizontal input[type=url],
+form.form-horizontal textarea,
+form.form-horizontal select,
+form.form-horizontal label,
+.form-horizontal input[type=text],
+.form-horizontal input[type=search],
+.form-horizontal input[type=password],
+.form-horizontal input[type=email],
+.form-horizontal input[type=file],
+.form-horizontal input[type=number],
+.form-horizontal input[type=tel],
+.form-horizontal input[type=url],
+.form-horizontal textarea,
+.form-horizontal select,
+.form-horizontal .popout__toggle,
+.form-horizontal label {
+  display: inline-block;
+  margin-bottom: 0;
+  width: auto;
+}
+
+/* ================ Error styles ================ */
+input[type=text].error,
+input[type=search].error,
+input[type=password].error,
+input[type=email].error,
+input[type=file].error,
+input[type=number].error,
+input[type=tel].error,
+input[type=url].error,
+textarea.error {
+  border-color: #D02E2E;
+  background-color: #FFF6F6;
+  color: #D02E2E;
+}
+
+label.error {
+  color: #D02E2E;
+}
+
+.form--additional {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.dot-spacer {
+  opacity: 0.5;
+  padding: 0 10px;
+}
+
+/* ================ Float labels ================ */
+.float__wrapper {
+  position: relative;
+  margin: 20px 0;
+}
+.float__wrapper:first-of-type, .float__wrapper:first-child {
+  margin-top: 0;
+}
+.float__wrapper:last-of-type, .float__wrapper:last-child {
+  margin-bottom: 0;
+}
+.float__wrapper input,
+.float__wrapper textarea {
+  width: 100%;
+}
+.float__wrapper input:focus,
+.float__wrapper textarea:focus {
+  border: 1px solid var(--text-dark);
+  box-shadow: none;
+}
+.float__wrapper label {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--FONT-STACK-ACCENT);
+  font-weight: var(--FONT-WEIGHT-ACCENT);
+  font-style: var(--FONT-STYLE-ACCENT);
+  text-transform: uppercase;
+  letter-spacing: var(--FONT-SPACING-ACCENT);
+  font-weight: var(--FONT-WEIGHT-ACCENT-BOLD);
+  font-size: calc(var(--font-2) * var(--FONT-ADJUST-ACCENT));
+  left: 7px;
+  opacity: 0;
+  padding: 0 4px;
+  position: absolute;
+  transform: translateY(2em);
+  transition: transform 0.2s ease-out, opacity 0.15s linear;
+  z-index: -1;
+}
+.float__wrapper label .strong, .float__wrapper label.strong {
+  font-weight: var(--FONT-WEIGHT-ACCENT-BOLD);
+}
+.float__wrapper label.label--float {
+  opacity: 1;
+  transform: translateY(-1em);
+  z-index: 1;
+  padding-bottom: 2px;
+}
+
+.input-group--inner-button.float__wrapper label.label--float {
+  transform: translateY(calc(-1em - 5px));
+}
+
+/* ============================================================================
+  #Notes and Form Feedback
+============================================================================== */
+.note,
+.errors {
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  font-size: 0.9em;
+  text-align: left;
+}
+.note ul,
+.note ol,
+.errors ul,
+.errors ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.note li:last-child,
+.errors li:last-child {
+  margin-bottom: 0;
+}
+.note p,
+.errors p {
+  margin: 0;
+}
+.note p + p,
+.errors p + p {
+  margin-top: 0.5em;
+}
+
+.note {
+  background-color: var(--hairline);
+}
+.note p {
+  margin: 0;
+  padding: 4px 0;
+}
+.note ul {
+  list-style: disc outside;
+  margin-left: 10px;
+}
+
+.errors {
+  color: #D02E2E;
+  background-color: #FFF6F6;
+}
+.errors ul {
+  list-style: disc outside;
+  margin-left: 20px;
+}
+.errors a {
+  color: #D02E2E;
+  text-decoration: underline;
+}
+.errors a:hover {
+  text-decoration: none;
+}
+.errors p + p {
+  margin-top: 0;
+}
+
+.form__legal {
+  margin-bottom: 10px;
+}
+.form__legal p {
+  margin-top: 0;
+  font-style: italic;
+  color: var(--text-light);
+  font-size: calc(var(--font-3) * var(--FONT-ADJUST-BODY));
+}
+.form__legal a {
+  color: var(--text-dark);
+  position: relative;
+  text-decoration: none;
+}
+.form__legal a:after {
+  content: "";
+  left: 0;
+  width: 100%;
+  display: block;
+  position: absolute;
+  bottom: -1px;
+  height: 1px;
+  background: currentcolor;
+  transition: transform 0.2s ease, opacity 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+@media (-webkit-min-device-pixel-ratio: 2) {
+  .form__legal a:after {
+    height: 0.5px;
+  }
+}
+.form__legal a:after {
+  opacity: 0.25;
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+}
+.form__legal a:hover:after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+  opacity: 1;
+}
+
+.form-success {
+  color: #56AD6A;
+  background-color: #ECFEF0;
+  border-color: #56AD6A;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.form-success a {
+  color: #56AD6A;
+  text-decoration: underline;
+}
+.form-success a:hover {
+  text-decoration: none;
+}
+
+.form-error {
+  color: #D02E2E;
+  background-color: #FFF6F6;
+  border-color: #D02E2E;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.form-error a {
+  color: #D02E2E;
+  text-decoration: underline;
+}
+.form-error a:hover {
+  text-decoration: none;
 }

@@ -10,8 +10,18 @@ import {
   MDBNavbarLink,
   MDBCollapse,
 } from 'mdb-react-ui-kit';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 import logo from '../assets/Opulent-logo.png';
+
+// Define the CSS for the navigation bar
+const navStyle = {
+  backgroundColor: '#fbf9f5', // Background color
+  color: '#627571', // Text color
+};
+
+const navLinkStyle = {
+  color: '#627571', // Text color for links
+};
 
 export default function Navbar({ setDisplayProducts }) {
   const [showBasic, setShowBasic] = useState(false);
@@ -21,7 +31,7 @@ export default function Navbar({ setDisplayProducts }) {
   };
 
   return (
-    <MDBNavbar expand="lg" light bgColor="light">
+    <MDBNavbar expand="lg" light style={navStyle}> {/* Apply the defined styles */}
       <MDBContainer fluid>
         <MDBNavbarBrand href="#">
           <img src={logo} alt="Logo" height="30" />
@@ -47,11 +57,11 @@ export default function Navbar({ setDisplayProducts }) {
               <MDBNavbarLink href="#">About Us</MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link to="/form" className="nav-link">Products</Link>
+              <Link to="/form" className="nav-link" style={navLinkStyle}>Products</Link>
               {/* Use Link to navigate to the "/form" route */}
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link to="/cart" className="nav-link">Cart</Link>
+              <Link to="/cart" className="nav-link" style={navLinkStyle}>Cart</Link>
               {/* Add a link to the Cart page */}
             </MDBNavbarItem>
           </MDBNavbarNav>

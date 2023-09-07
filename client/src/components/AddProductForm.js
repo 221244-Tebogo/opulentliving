@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const AddProductForm = () => {
   const [productData, setProductData] = useState({
@@ -89,50 +90,63 @@ const AddProductForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add or Update a Product</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={productData.name}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>Image URL:</label>
-          <input
-            type="text"
-            name="image"
-            value={productData.image}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>Count in Stock:</label>
-          <input
-            type="number"
-            name="countInStock"
-            value={productData.countInStock}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="submit">{selectedProductId ? 'Update Product' : 'Add Product'}</button>
-      </form>
-
-      <h2>Product List</h2>
-      <ul>
-        {products.map((product) => (
-          <li key={product._id}>
-            {product.name} -{' '}
-            <button onClick={() => handleEdit(product._id)}>Edit</button>{' '}
-            <button onClick={() => handleDelete(product._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container className="text-center">
+      <Row>
+        <Col>
+          <h2 className="h1.product_title">Add or Update a Product</h2>
+          <Form onSubmit={handleSubmit} className="float__wrapper">
+            <Form.Group>
+              <Form.Label>Name:</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={productData.name}
+                onChange={handleInputChange}
+                className="product__name"
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Image URL:</Form.Label>
+              <Form.Control
+                type="text"
+                name="image"
+                value={productData.image}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Count in Stock:</Form.Label>
+              <Form.Control
+                type="number"
+                name="countInStock"
+                value={productData.countInStock}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Button type="submit" variant="primary">
+              {selectedProductId ? 'Update Product' : 'Add Product'}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <ul>
+            {products.map((product) => (
+              <li key={product._id}>
+                {product.name} -{' '}
+                <Button variant="primary" onClick={() => handleEdit(product._id)} className="product__button">
+                  Edit
+                </Button>{' '}
+                <Button variant="danger" onClick={() => handleDelete(product._id)} className="product__button">
+                  Delete
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

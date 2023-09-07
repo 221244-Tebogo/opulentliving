@@ -2,12 +2,15 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const ProductCard = ({ product }) => { //({ product, onDelete, onUpdate })
-  console.log(product);
-
+const ProductCard = ({ product, onUpdate }) => {
   const handleDelete = (productID) => {
-        console.log(productID);
-        axios.delete('http://localhost:5001/api/product/' + productID)
+    axios.delete('http://localhost:5001/api/products/' + productID)
+      .then(() => {
+        onUpdate(); // Refresh the product list after deletion
+      })
+      .catch((error) => {
+        console.error('Error deleting product:', error);
+      });
   };
 
   const handleUpdate = () => {
