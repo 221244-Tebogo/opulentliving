@@ -8,14 +8,9 @@ import {
   MDBNavbarNav,
   MDBNavbarItem,
   MDBNavbarLink,
-  MDBBtn,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
   MDBCollapse,
 } from 'mdb-react-ui-kit';
-
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import logo from '../assets/Opulent-logo.png';
 
 export default function Navbar({ setDisplayProducts }) {
@@ -52,10 +47,12 @@ export default function Navbar({ setDisplayProducts }) {
               <MDBNavbarLink href="#">About Us</MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink onClick={handleProductsClick}>Products</MDBNavbarLink>
+              <Link to="/form" className="nav-link">Products</Link>
+              {/* Use Link to navigate to the "/form" route */}
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href="#">Contact</MDBNavbarLink>
+              <Link to="/cart" className="nav-link">Cart</Link>
+              {/* Add a link to the Cart page */}
             </MDBNavbarItem>
           </MDBNavbarNav>
 
