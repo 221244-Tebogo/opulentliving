@@ -1,52 +1,36 @@
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- */
-import ParseFile from './ParseFile';
-import ParseObject from './ParseObject';
-import ParseRelation from './ParseRelation';
-/*:: type EncounterMap = {
-  objects: { [identifier: string]: ParseObject | boolean; };
-  files: Array<ParseFile>;
-};*/
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-/**
- * Return an array of unsaved children, which are either Parse Objects or Files.
- * If it encounters any dirty Objects without Ids, it will throw an exception.
- */
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = unsavedChildren;
 
-export default function unsavedChildren(obj
-/*: ParseObject*/
-, allowDeepUnsaved
-/*:: ?: boolean*/
-)
-/*: Array<ParseFile | ParseObject>*/
-{
-  const encountered = {
+var _ParseFile = _interopRequireDefault(require("./ParseFile"));
+
+var _ParseObject = _interopRequireDefault(require("./ParseObject"));
+
+var _ParseRelation = _interopRequireDefault(require("./ParseRelation"));
+
+function unsavedChildren(obj, allowDeepUnsaved) {
+  var encountered = {
     objects: {},
     files: []
   };
 
-  const identifier = obj.className + ':' + obj._getId();
+  var identifier = obj.className + ':' + obj._getId();
 
   encountered.objects[identifier] = obj.dirty() ? obj : true;
-  const attributes = obj.attributes;
+  var attributes = obj.attributes;
 
-  for (const attr in attributes) {
+  for (var attr in attributes) {
     if (typeof attributes[attr] === 'object') {
       traverse(attributes[attr], encountered, false, !!allowDeepUnsaved);
     }
   }
 
-  const unsaved = [];
+  var unsaved = [];
 
-  for (const id in encountered.objects) {
+  for (var id in encountered.objects) {
     if (id !== identifier && encountered.objects[id] !== true) {
       unsaved.push(encountered.objects[id]);
     }
@@ -55,27 +39,19 @@ export default function unsavedChildren(obj
   return unsaved.concat(encountered.files);
 }
 
-function traverse(obj
-/*: ParseObject*/
-, encountered
-/*: EncounterMap*/
-, shouldThrow
-/*: boolean*/
-, allowDeepUnsaved
-/*: boolean*/
-) {
-  if (obj instanceof ParseObject) {
+function traverse(obj, encountered, shouldThrow, allowDeepUnsaved) {
+  if (obj instanceof _ParseObject.default) {
     if (!obj.id && shouldThrow) {
       throw new Error('Cannot create a pointer to an unsaved Object.');
     }
 
-    const identifier = obj.className + ':' + obj._getId();
+    var _identifier = obj.className + ':' + obj._getId();
 
-    if (!encountered.objects[identifier]) {
-      encountered.objects[identifier] = obj.dirty() ? obj : true;
-      const attributes = obj.attributes;
+    if (!encountered.objects[_identifier]) {
+      encountered.objects[_identifier] = obj.dirty() ? obj : true;
+      var attributes = obj.attributes;
 
-      for (const attr in attributes) {
+      for (var attr in attributes) {
         if (typeof attributes[attr] === 'object') {
           traverse(attributes[attr], encountered, !allowDeepUnsaved, allowDeepUnsaved);
         }
@@ -85,7 +61,7 @@ function traverse(obj
     return;
   }
 
-  if (obj instanceof ParseFile) {
+  if (obj instanceof _ParseFile.default) {
     if (!obj.url() && encountered.files.indexOf(obj) < 0) {
       encountered.files.push(obj);
     }
@@ -93,19 +69,19 @@ function traverse(obj
     return;
   }
 
-  if (obj instanceof ParseRelation) {
+  if (obj instanceof _ParseRelation.default) {
     return;
   }
 
   if (Array.isArray(obj)) {
-    obj.forEach(el => {
+    obj.forEach(function (el) {
       if (typeof el === 'object') {
         traverse(el, encountered, shouldThrow, allowDeepUnsaved);
       }
     });
   }
 
-  for (const k in obj) {
+  for (var k in obj) {
     if (typeof obj[k] === 'object') {
       traverse(obj[k], encountered, shouldThrow, allowDeepUnsaved);
     }

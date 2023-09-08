@@ -1,36 +1,80 @@
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- */
-import * as ObjectStateMutations from './ObjectStateMutations';
-/*:: import type { Op } from './ParseOp';*/
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.clearAllState = clearAllState;
+exports.commitServerChanges = commitServerChanges;
+exports.duplicateState = duplicateState;
+exports.enqueueTask = enqueueTask;
+exports.estimateAttribute = estimateAttribute;
+exports.estimateAttributes = estimateAttributes;
+exports.getObjectCache = getObjectCache;
+exports.getPendingOps = getPendingOps;
+exports.getServerData = getServerData;
+exports.getState = getState;
+exports.initializeState = initializeState;
+exports.mergeFirstPendingState = mergeFirstPendingState;
+exports.popPendingState = popPendingState;
+exports.pushPendingState = pushPendingState;
+exports.removeState = removeState;
+exports.setPendingOp = setPendingOp;
+exports.setServerData = setServerData;
 
-/*:: import type { AttributeMap, ObjectCache, OpsMap, State } from './ObjectStateMutations';*/
+var ObjectStateMutations = _interopRequireWildcard(require("./ObjectStateMutations"));
 
-/*:: type ObjectIdentifier = {
-  className: string;
-  id: string
-};*/
+function _getRequireWildcardCache(nodeInterop) {
+  if (typeof WeakMap !== "function") return null;
+  var cacheBabelInterop = new WeakMap();
+  var cacheNodeInterop = new WeakMap();
+  return (_getRequireWildcardCache = function (nodeInterop) {
+    return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
+  })(nodeInterop);
+}
 
-let objectState
-/*: {
-  [className: string]: {
-    [id: string]: State
+function _interopRequireWildcard(obj, nodeInterop) {
+  if (!nodeInterop && obj && obj.__esModule) {
+    return obj;
   }
-}*/
-= {};
-export function getState(obj
-/*: ObjectIdentifier*/
-)
-/*: ?State*/
-{
-  const classData = objectState[obj.className];
+
+  if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+    return {
+      default: obj
+    };
+  }
+
+  var cache = _getRequireWildcardCache(nodeInterop);
+
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+
+  var newObj = {};
+  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+
+  for (var key in obj) {
+    if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+
+      if (desc && (desc.get || desc.set)) {
+        Object.defineProperty(newObj, key, desc);
+      } else {
+        newObj[key] = obj[key];
+      }
+    }
+  }
+
+  newObj.default = obj;
+
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+
+  return newObj;
+}
+
+var objectState = {};
+
+function getState(obj) {
+  var classData = objectState[obj.className];
 
   if (classData) {
     return classData[obj.id] || null;
@@ -38,14 +82,9 @@ export function getState(obj
 
   return null;
 }
-export function initializeState(obj
-/*: ObjectIdentifier*/
-, initial
-/*:: ?: State*/
-)
-/*: State*/
-{
-  let state = getState(obj);
+
+function initializeState(obj, initial) {
+  var state = getState(obj);
 
   if (state) {
     return state;
@@ -62,12 +101,9 @@ export function initializeState(obj
   state = objectState[obj.className][obj.id] = initial;
   return state;
 }
-export function removeState(obj
-/*: ObjectIdentifier*/
-)
-/*: ?State*/
-{
-  const state = getState(obj);
+
+function removeState(obj) {
+  var state = getState(obj);
 
   if (state === null) {
     return null;
@@ -76,12 +112,9 @@ export function removeState(obj
   delete objectState[obj.className][obj.id];
   return state;
 }
-export function getServerData(obj
-/*: ObjectIdentifier*/
-)
-/*: AttributeMap*/
-{
-  const state = getState(obj);
+
+function getServerData(obj) {
+  var state = getState(obj);
 
   if (state) {
     return state.serverData;
@@ -89,20 +122,14 @@ export function getServerData(obj
 
   return {};
 }
-export function setServerData(obj
-/*: ObjectIdentifier*/
-, attributes
-/*: AttributeMap*/
-) {
-  const serverData = initializeState(obj).serverData;
+
+function setServerData(obj, attributes) {
+  var serverData = initializeState(obj).serverData;
   ObjectStateMutations.setServerData(serverData, attributes);
 }
-export function getPendingOps(obj
-/*: ObjectIdentifier*/
-)
-/*: Array<OpsMap>*/
-{
-  const state = getState(obj);
+
+function getPendingOps(obj) {
+  var state = getState(obj);
 
   if (state) {
     return state.pendingOps;
@@ -110,42 +137,29 @@ export function getPendingOps(obj
 
   return [{}];
 }
-export function setPendingOp(obj
-/*: ObjectIdentifier*/
-, attr
-/*: string*/
-, op
-/*: ?Op*/
-) {
-  const pendingOps = initializeState(obj).pendingOps;
+
+function setPendingOp(obj, attr, op) {
+  var pendingOps = initializeState(obj).pendingOps;
   ObjectStateMutations.setPendingOp(pendingOps, attr, op);
 }
-export function pushPendingState(obj
-/*: ObjectIdentifier*/
-) {
-  const pendingOps = initializeState(obj).pendingOps;
+
+function pushPendingState(obj) {
+  var pendingOps = initializeState(obj).pendingOps;
   ObjectStateMutations.pushPendingState(pendingOps);
 }
-export function popPendingState(obj
-/*: ObjectIdentifier*/
-)
-/*: OpsMap*/
-{
-  const pendingOps = initializeState(obj).pendingOps;
+
+function popPendingState(obj) {
+  var pendingOps = initializeState(obj).pendingOps;
   return ObjectStateMutations.popPendingState(pendingOps);
 }
-export function mergeFirstPendingState(obj
-/*: ObjectIdentifier*/
-) {
-  const pendingOps = getPendingOps(obj);
+
+function mergeFirstPendingState(obj) {
+  var pendingOps = getPendingOps(obj);
   ObjectStateMutations.mergeFirstPendingState(pendingOps);
 }
-export function getObjectCache(obj
-/*: ObjectIdentifier*/
-)
-/*: ObjectCache*/
-{
-  const state = getState(obj);
+
+function getObjectCache(obj) {
+  var state = getState(obj);
 
   if (state) {
     return state.objectCache;
@@ -153,51 +167,33 @@ export function getObjectCache(obj
 
   return {};
 }
-export function estimateAttribute(obj
-/*: ObjectIdentifier*/
-, attr
-/*: string*/
-)
-/*: mixed*/
-{
-  const serverData = getServerData(obj);
-  const pendingOps = getPendingOps(obj);
+
+function estimateAttribute(obj, attr) {
+  var serverData = getServerData(obj);
+  var pendingOps = getPendingOps(obj);
   return ObjectStateMutations.estimateAttribute(serverData, pendingOps, obj.className, obj.id, attr);
 }
-export function estimateAttributes(obj
-/*: ObjectIdentifier*/
-)
-/*: AttributeMap*/
-{
-  const serverData = getServerData(obj);
-  const pendingOps = getPendingOps(obj);
+
+function estimateAttributes(obj) {
+  var serverData = getServerData(obj);
+  var pendingOps = getPendingOps(obj);
   return ObjectStateMutations.estimateAttributes(serverData, pendingOps, obj.className, obj.id);
 }
-export function commitServerChanges(obj
-/*: ObjectIdentifier*/
-, changes
-/*: AttributeMap*/
-) {
-  const state = initializeState(obj);
+
+function commitServerChanges(obj, changes) {
+  var state = initializeState(obj);
   ObjectStateMutations.commitServerChanges(state.serverData, state.objectCache, changes);
 }
-export function enqueueTask(obj
-/*: ObjectIdentifier*/
-, task
-/*: () => Promise*/
-)
-/*: Promise*/
-{
-  const state = initializeState(obj);
+
+function enqueueTask(obj, task) {
+  var state = initializeState(obj);
   return state.tasks.enqueue(task);
 }
-export function clearAllState() {
+
+function clearAllState() {
   objectState = {};
 }
-export function duplicateState(source
-/*: {id: string}*/
-, dest
-/*: {id: string}*/
-) {
+
+function duplicateState(source, dest) {
   dest.id = source.id;
 }

@@ -1,63 +1,38 @@
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- */
-import ParseRole from './ParseRole';
-import ParseUser from './ParseUser';
-/*:: type PermissionsMap = { [permission: string]: boolean };*/
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-/*:: type ByIdMap = { [userId: string]: PermissionsMap };*/
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
-const PUBLIC_KEY = '*';
-/**
- * Creates a new ACL.
- * If no argument is given, the ACL has no permissions for anyone.
- * If the argument is a Parse.User, the ACL will have read and write
- *   permission for only that user.
- * If the argument is any other JSON object, that object will be interpretted
- *   as a serialized ACL created with toJSON().
- *
- * <p>An ACL, or Access Control List can be added to any
- * <code>Parse.Object</code> to restrict access to only a subset of users
- * of your application.</p>
- * @alias Parse.ACL
- */
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-class ParseACL {
-  /*:: permissionsById: ByIdMap;*/
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-  /**
-   * @param {(Parse.User|Object)} user The user to initialize the ACL for
-   */
-  constructor(arg1
-  /*: ParseUser | ByIdMap*/
-  ) {
+var _ParseRole = _interopRequireDefault(require("./ParseRole"));
+
+var _ParseUser = _interopRequireDefault(require("./ParseUser"));
+
+var PUBLIC_KEY = '*';
+
+var ParseACL = function () {
+  function ParseACL(arg1) {
+    (0, _classCallCheck2.default)(this, ParseACL);
     this.permissionsById = {};
 
     if (arg1 && typeof arg1 === 'object') {
-      if (arg1 instanceof ParseUser) {
+      if (arg1 instanceof _ParseUser.default) {
         this.setReadAccess(arg1, true);
         this.setWriteAccess(arg1, true);
       } else {
-        for (const userId in arg1) {
-          const accessList = arg1[userId];
+        for (var _userId in arg1) {
+          var accessList = arg1[_userId];
+          this.permissionsById[_userId] = {};
 
-          if (typeof userId !== 'string') {
-            throw new TypeError('Tried to create an ACL with an invalid user id.');
-          }
+          for (var _permission in accessList) {
+            var allowed = accessList[_permission];
 
-          this.permissionsById[userId] = {};
-
-          for (const permission in accessList) {
-            const allowed = accessList[permission];
-
-            if (permission !== 'read' && permission !== 'write') {
+            if (_permission !== 'read' && _permission !== 'write') {
               throw new TypeError('Tried to create an ACL with an invalid permission type.');
             }
 
@@ -65,7 +40,7 @@ class ParseACL {
               throw new TypeError('Tried to create an ACL with an invalid permission value.');
             }
 
-            this.permissionsById[userId][permission] = allowed;
+            this.permissionsById[_userId][_permission] = allowed;
           }
         }
       }
@@ -73,357 +48,214 @@ class ParseACL {
       throw new TypeError('ParseACL constructed with a function. Did you forget ()?');
     }
   }
-  /**
-   * Returns a JSON-encoded version of the ACL.
-   * @return {Object}
-   */
 
+  (0, _createClass2.default)(ParseACL, [{
+    key: "toJSON",
+    value: function () {
+      var permissions = {};
 
-  toJSON()
-  /*: ByIdMap*/
-  {
-    const permissions = {};
+      for (var p in this.permissionsById) {
+        permissions[p] = this.permissionsById[p];
+      }
 
-    for (const p in this.permissionsById) {
-      permissions[p] = this.permissionsById[p];
+      return permissions;
     }
-
-    return permissions;
-  }
-  /**
-   * Returns whether this ACL is equal to another object
-   * @param other The other object to compare to
-   * @return {Boolean}
-   */
-
-
-  equals(other
-  /*: ParseACL*/
-  )
-  /*: boolean*/
-  {
-    if (!(other instanceof ParseACL)) {
-      return false;
-    }
-
-    const users = Object.keys(this.permissionsById);
-    const otherUsers = Object.keys(other.permissionsById);
-
-    if (users.length !== otherUsers.length) {
-      return false;
-    }
-
-    for (const u in this.permissionsById) {
-      if (!other.permissionsById[u]) {
+  }, {
+    key: "equals",
+    value: function (other) {
+      if (!(other instanceof ParseACL)) {
         return false;
       }
 
-      if (this.permissionsById[u].read !== other.permissionsById[u].read) {
+      var users = Object.keys(this.permissionsById);
+      var otherUsers = Object.keys(other.permissionsById);
+
+      if (users.length !== otherUsers.length) {
         return false;
       }
 
-      if (this.permissionsById[u].write !== other.permissionsById[u].write) {
-        return false;
-      }
-    }
+      for (var u in this.permissionsById) {
+        if (!other.permissionsById[u]) {
+          return false;
+        }
 
-    return true;
-  }
+        if (this.permissionsById[u].read !== other.permissionsById[u].read) {
+          return false;
+        }
 
-  _setAccess(accessType
-  /*: string*/
-  , userId
-  /*: ParseUser | ParseRole | string*/
-  , allowed
-  /*: boolean*/
-  ) {
-    if (userId instanceof ParseUser) {
-      userId = userId.id;
-    } else if (userId instanceof ParseRole) {
-      const name = userId.getName();
-
-      if (!name) {
-        throw new TypeError('Role must have a name');
+        if (this.permissionsById[u].write !== other.permissionsById[u].write) {
+          return false;
+        }
       }
 
-      userId = 'role:' + name;
+      return true;
     }
+  }, {
+    key: "_setAccess",
+    value: function (accessType, userId, allowed) {
+      if (userId instanceof _ParseUser.default) {
+        userId = userId.id;
+      } else if (userId instanceof _ParseRole.default) {
+        var name = userId.getName();
 
-    if (typeof userId !== 'string') {
-      throw new TypeError('userId must be a string.');
-    }
+        if (!name) {
+          throw new TypeError('Role must have a name');
+        }
 
-    if (typeof allowed !== 'boolean') {
-      throw new TypeError('allowed must be either true or false.');
-    }
+        userId = 'role:' + name;
+      }
 
-    let permissions = this.permissionsById[userId];
+      if (typeof userId !== 'string') {
+        throw new TypeError('userId must be a string.');
+      }
 
-    if (!permissions) {
-      if (!allowed) {
-        // The user already doesn't have this permission, so no action is needed
-        return;
+      if (typeof allowed !== 'boolean') {
+        throw new TypeError('allowed must be either true or false.');
+      }
+
+      var permissions = this.permissionsById[userId];
+
+      if (!permissions) {
+        if (!allowed) {
+          return;
+        } else {
+          permissions = {};
+          this.permissionsById[userId] = permissions;
+        }
+      }
+
+      if (allowed) {
+        this.permissionsById[userId][accessType] = true;
       } else {
-        permissions = {};
-        this.permissionsById[userId] = permissions;
+        delete permissions[accessType];
+
+        if (Object.keys(permissions).length === 0) {
+          delete this.permissionsById[userId];
+        }
       }
     }
+  }, {
+    key: "_getAccess",
+    value: function (accessType, userId) {
+      if (userId instanceof _ParseUser.default) {
+        userId = userId.id;
 
-    if (allowed) {
-      this.permissionsById[userId][accessType] = true;
-    } else {
-      delete permissions[accessType];
+        if (!userId) {
+          throw new Error('Cannot get access for a ParseUser without an ID');
+        }
+      } else if (userId instanceof _ParseRole.default) {
+        var name = userId.getName();
 
-      if (Object.keys(permissions).length === 0) {
-        delete this.permissionsById[userId];
-      }
-    }
-  }
+        if (!name) {
+          throw new TypeError('Role must have a name');
+        }
 
-  _getAccess(accessType
-  /*: string*/
-  , userId
-  /*: ParseUser | ParseRole | string*/
-  )
-  /*: boolean*/
-  {
-    if (userId instanceof ParseUser) {
-      userId = userId.id;
-
-      if (!userId) {
-        throw new Error('Cannot get access for a ParseUser without an ID');
-      }
-    } else if (userId instanceof ParseRole) {
-      const name = userId.getName();
-
-      if (!name) {
-        throw new TypeError('Role must have a name');
+        userId = 'role:' + name;
       }
 
-      userId = 'role:' + name;
+      var permissions = this.permissionsById[userId];
+
+      if (!permissions) {
+        return false;
+      }
+
+      return !!permissions[accessType];
     }
-
-    const permissions = this.permissionsById[userId];
-
-    if (!permissions) {
-      return false;
+  }, {
+    key: "setReadAccess",
+    value: function (userId, allowed) {
+      this._setAccess('read', userId, allowed);
     }
-
-    return !!permissions[accessType];
-  }
-  /**
-   * Sets whether the given user is allowed to read this object.
-   * @param userId An instance of Parse.User or its objectId.
-   * @param {Boolean} allowed Whether that user should have read access.
-   */
-
-
-  setReadAccess(userId
-  /*: ParseUser | ParseRole | string*/
-  , allowed
-  /*: boolean*/
-  ) {
-    this._setAccess('read', userId, allowed);
-  }
-  /**
-   * Get whether the given user id is *explicitly* allowed to read this object.
-   * Even if this returns false, the user may still be able to access it if
-   * getPublicReadAccess returns true or a role that the user belongs to has
-   * write access.
-   * @param userId An instance of Parse.User or its objectId, or a Parse.Role.
-   * @return {Boolean}
-   */
-
-
-  getReadAccess(userId
-  /*: ParseUser | ParseRole | string*/
-  )
-  /*: boolean*/
-  {
-    return this._getAccess('read', userId);
-  }
-  /**
-   * Sets whether the given user id is allowed to write this object.
-   * @param userId An instance of Parse.User or its objectId, or a Parse.Role..
-   * @param {Boolean} allowed Whether that user should have write access.
-   */
-
-
-  setWriteAccess(userId
-  /*: ParseUser | ParseRole | string*/
-  , allowed
-  /*: boolean*/
-  ) {
-    this._setAccess('write', userId, allowed);
-  }
-  /**
-   * Gets whether the given user id is *explicitly* allowed to write this object.
-   * Even if this returns false, the user may still be able to write it if
-   * getPublicWriteAccess returns true or a role that the user belongs to has
-   * write access.
-   * @param userId An instance of Parse.User or its objectId, or a Parse.Role.
-   * @return {Boolean}
-   */
-
-
-  getWriteAccess(userId
-  /*: ParseUser | ParseRole | string*/
-  )
-  /*: boolean*/
-  {
-    return this._getAccess('write', userId);
-  }
-  /**
-   * Sets whether the public is allowed to read this object.
-   * @param {Boolean} allowed
-   */
-
-
-  setPublicReadAccess(allowed
-  /*: boolean*/
-  ) {
-    this.setReadAccess(PUBLIC_KEY, allowed);
-  }
-  /**
-   * Gets whether the public is allowed to read this object.
-   * @return {Boolean}
-   */
-
-
-  getPublicReadAccess()
-  /*: boolean*/
-  {
-    return this.getReadAccess(PUBLIC_KEY);
-  }
-  /**
-   * Sets whether the public is allowed to write this object.
-   * @param {Boolean} allowed
-   */
-
-
-  setPublicWriteAccess(allowed
-  /*: boolean*/
-  ) {
-    this.setWriteAccess(PUBLIC_KEY, allowed);
-  }
-  /**
-   * Gets whether the public is allowed to write this object.
-   * @return {Boolean}
-   */
-
-
-  getPublicWriteAccess()
-  /*: boolean*/
-  {
-    return this.getWriteAccess(PUBLIC_KEY);
-  }
-  /**
-   * Gets whether users belonging to the given role are allowed
-   * to read this object. Even if this returns false, the role may
-   * still be able to write it if a parent role has read access.
-   *
-   * @param role The name of the role, or a Parse.Role object.
-   * @return {Boolean} true if the role has read access. false otherwise.
-   * @throws {TypeError} If role is neither a Parse.Role nor a String.
-   */
-
-
-  getRoleReadAccess(role
-  /*: ParseRole | string*/
-  )
-  /*: boolean*/
-  {
-    if (role instanceof ParseRole) {
-      // Normalize to the String name
-      role = role.getName();
+  }, {
+    key: "getReadAccess",
+    value: function (userId) {
+      return this._getAccess('read', userId);
     }
-
-    if (typeof role !== 'string') {
-      throw new TypeError('role must be a ParseRole or a String');
+  }, {
+    key: "setWriteAccess",
+    value: function (userId, allowed) {
+      this._setAccess('write', userId, allowed);
     }
-
-    return this.getReadAccess('role:' + role);
-  }
-  /**
-   * Gets whether users belonging to the given role are allowed
-   * to write this object. Even if this returns false, the role may
-   * still be able to write it if a parent role has write access.
-   *
-   * @param role The name of the role, or a Parse.Role object.
-   * @return {Boolean} true if the role has write access. false otherwise.
-   * @throws {TypeError} If role is neither a Parse.Role nor a String.
-   */
-
-
-  getRoleWriteAccess(role
-  /*: ParseRole | string*/
-  )
-  /*: boolean*/
-  {
-    if (role instanceof ParseRole) {
-      // Normalize to the String name
-      role = role.getName();
+  }, {
+    key: "getWriteAccess",
+    value: function (userId) {
+      return this._getAccess('write', userId);
     }
-
-    if (typeof role !== 'string') {
-      throw new TypeError('role must be a ParseRole or a String');
+  }, {
+    key: "setPublicReadAccess",
+    value: function (allowed) {
+      this.setReadAccess(PUBLIC_KEY, allowed);
     }
-
-    return this.getWriteAccess('role:' + role);
-  }
-  /**
-   * Sets whether users belonging to the given role are allowed
-   * to read this object.
-   *
-   * @param role The name of the role, or a Parse.Role object.
-   * @param {Boolean} allowed Whether the given role can read this object.
-   * @throws {TypeError} If role is neither a Parse.Role nor a String.
-   */
-
-
-  setRoleReadAccess(role
-  /*: ParseRole | string*/
-  , allowed
-  /*: boolean*/
-  ) {
-    if (role instanceof ParseRole) {
-      // Normalize to the String name
-      role = role.getName();
+  }, {
+    key: "getPublicReadAccess",
+    value: function () {
+      return this.getReadAccess(PUBLIC_KEY);
     }
-
-    if (typeof role !== 'string') {
-      throw new TypeError('role must be a ParseRole or a String');
+  }, {
+    key: "setPublicWriteAccess",
+    value: function (allowed) {
+      this.setWriteAccess(PUBLIC_KEY, allowed);
     }
-
-    this.setReadAccess('role:' + role, allowed);
-  }
-  /**
-   * Sets whether users belonging to the given role are allowed
-   * to write this object.
-   *
-   * @param role The name of the role, or a Parse.Role object.
-   * @param {Boolean} allowed Whether the given role can write this object.
-   * @throws {TypeError} If role is neither a Parse.Role nor a String.
-   */
-
-
-  setRoleWriteAccess(role
-  /*: ParseRole | string*/
-  , allowed
-  /*: boolean*/
-  ) {
-    if (role instanceof ParseRole) {
-      // Normalize to the String name
-      role = role.getName();
+  }, {
+    key: "getPublicWriteAccess",
+    value: function () {
+      return this.getWriteAccess(PUBLIC_KEY);
     }
+  }, {
+    key: "getRoleReadAccess",
+    value: function (role) {
+      if (role instanceof _ParseRole.default) {
+        role = role.getName();
+      }
 
-    if (typeof role !== 'string') {
-      throw new TypeError('role must be a ParseRole or a String');
+      if (typeof role !== 'string') {
+        throw new TypeError('role must be a ParseRole or a String');
+      }
+
+      return this.getReadAccess('role:' + role);
     }
+  }, {
+    key: "getRoleWriteAccess",
+    value: function (role) {
+      if (role instanceof _ParseRole.default) {
+        role = role.getName();
+      }
 
-    this.setWriteAccess('role:' + role, allowed);
-  }
+      if (typeof role !== 'string') {
+        throw new TypeError('role must be a ParseRole or a String');
+      }
 
-}
+      return this.getWriteAccess('role:' + role);
+    }
+  }, {
+    key: "setRoleReadAccess",
+    value: function (role, allowed) {
+      if (role instanceof _ParseRole.default) {
+        role = role.getName();
+      }
 
-export default ParseACL;
+      if (typeof role !== 'string') {
+        throw new TypeError('role must be a ParseRole or a String');
+      }
+
+      this.setReadAccess('role:' + role, allowed);
+    }
+  }, {
+    key: "setRoleWriteAccess",
+    value: function (role, allowed) {
+      if (role instanceof _ParseRole.default) {
+        role = role.getName();
+      }
+
+      if (typeof role !== 'string') {
+        throw new TypeError('role must be a ParseRole or a String');
+      }
+
+      this.setWriteAccess('role:' + role, allowed);
+    }
+  }]);
+  return ParseACL;
+}();
+
+var _default = ParseACL;
+exports.default = _default;

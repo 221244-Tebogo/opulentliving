@@ -1,19 +1,15 @@
 // models/Product.js
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ProductSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true,  // is this required or not?
+        required: true  // is this required or not?
     },
     description: {
         type: String,
         required: true
     },
-   richDescription: {
-    type: String,
-    default: ''
-   },
    image: {
     type: String,
     required: true, // is this required

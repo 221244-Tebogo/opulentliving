@@ -1,74 +1,64 @@
-/*:: type Task = {
-  task: () => Promise;
-  _completion: Promise
-};*/
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- */
-class TaskQueue {
-  /*:: queue: Array<Task>;*/
-  constructor() {
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _promiseUtils = require("./promiseUtils");
+
+var TaskQueue = function () {
+  function TaskQueue() {
+    (0, _classCallCheck2.default)(this, TaskQueue);
     this.queue = [];
   }
 
-  enqueue(task
-  /*: () => Promise*/
-  )
-  /*: Promise*/
-  {
-    let res;
-    let rej;
-    const taskComplete = new Promise((resolve, reject) => {
-      res = resolve;
-      rej = reject;
-    });
-    taskComplete.resolve = res;
-    taskComplete.reject = rej;
-    this.queue.push({
-      task: task,
-      _completion: taskComplete
-    });
+  (0, _createClass2.default)(TaskQueue, [{
+    key: "enqueue",
+    value: function (task) {
+      var _this = this;
 
-    if (this.queue.length === 1) {
-      task().then(() => {
-        this._dequeue();
-
-        taskComplete.resolve();
-      }, error => {
-        this._dequeue();
-
-        taskComplete.reject(error);
+      var taskComplete = new _promiseUtils.resolvingPromise();
+      this.queue.push({
+        task: task,
+        _completion: taskComplete
       });
+
+      if (this.queue.length === 1) {
+        task().then(function () {
+          _this._dequeue();
+
+          taskComplete.resolve();
+        }, function (error) {
+          _this._dequeue();
+
+          taskComplete.reject(error);
+        });
+      }
+
+      return taskComplete;
     }
+  }, {
+    key: "_dequeue",
+    value: function () {
+      var _this2 = this;
 
-    return taskComplete;
-  }
+      this.queue.shift();
 
-  _dequeue() {
-    this.queue.shift();
+      if (this.queue.length) {
+        var next = this.queue[0];
+        next.task().then(function () {
+          _this2._dequeue();
 
-    if (this.queue.length) {
-      const next = this.queue[0];
-      next.task().then(() => {
-        this._dequeue();
+          next._completion.resolve();
+        }, function (error) {
+          _this2._dequeue();
 
-        next._completion.resolve();
-      }, error => {
-        this._dequeue();
-
-        next._completion.reject(error);
-      });
+          next._completion.reject(error);
+        });
+      }
     }
-  }
-
-}
+  }]);
+  return TaskQueue;
+}();
 
 module.exports = TaskQueue;

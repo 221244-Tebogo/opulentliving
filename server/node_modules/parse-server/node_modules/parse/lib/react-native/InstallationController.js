@@ -1,37 +1,22 @@
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- */
-import Storage from './Storage';
-let iidCache = null;
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function hexOctet() {
-  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-}
+var _Storage = _interopRequireDefault(require("./Storage"));
 
-function generateId() {
-  return hexOctet() + hexOctet() + '-' + hexOctet() + '-' + hexOctet() + '-' + hexOctet() + '-' + hexOctet() + hexOctet() + hexOctet();
-}
+var uuidv4 = require('./uuid');
 
-const InstallationController = {
-  currentInstallationId()
-  /*: Promise<string>*/
-  {
+var iidCache = null;
+var InstallationController = {
+  currentInstallationId: function () {
     if (typeof iidCache === 'string') {
       return Promise.resolve(iidCache);
     }
 
-    const path = Storage.generatePath('installationId');
-    return Storage.getItemAsync(path).then(iid => {
+    var path = _Storage.default.generatePath('installationId');
+
+    return _Storage.default.getItemAsync(path).then(function (iid) {
       if (!iid) {
-        iid = generateId();
-        return Storage.setItemAsync(path, iid).then(() => {
+        iid = uuidv4();
+        return _Storage.default.setItemAsync(path, iid).then(function () {
           iidCache = iid;
           return iid;
         });
@@ -41,16 +26,11 @@ const InstallationController = {
       return iid;
     });
   },
-
-  _clearCache() {
+  _clearCache: function () {
     iidCache = null;
   },
-
-  _setInstallationIdCache(iid
-  /*: string*/
-  ) {
+  _setInstallationIdCache: function (iid) {
     iidCache = iid;
   }
-
 };
 module.exports = InstallationController;

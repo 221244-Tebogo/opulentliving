@@ -3,19 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getFunctions = getFunctions;
-exports.getTriggers = getTriggers;
-exports.getFunction = getFunction;
-exports.getTrigger = getTrigger;
+exports.create = create;
 exports.createFunction = createFunction;
 exports.createTrigger = createTrigger;
-exports.create = create;
-exports.updateFunction = updateFunction;
-exports.updateTrigger = updateTrigger;
-exports.update = update;
+exports.getFunction = getFunction;
+exports.getFunctions = getFunctions;
+exports.getTrigger = getTrigger;
+exports.getTriggers = getTriggers;
+exports.remove = remove;
 exports.removeFunction = removeFunction;
 exports.removeTrigger = removeTrigger;
-exports.remove = remove;
+exports.update = update;
+exports.updateFunction = updateFunction;
+exports.updateTrigger = updateTrigger;
 
 var _CoreManager = _interopRequireDefault(require("./CoreManager"));
 
@@ -30,19 +30,19 @@ function _interopRequireDefault(obj) {
 }
 
 function getFunctions() {
-  return _CoreManager.default.getHooksController().get("functions");
+  return _CoreManager.default.getHooksController().get('functions');
 }
 
 function getTriggers() {
-  return _CoreManager.default.getHooksController().get("triggers");
+  return _CoreManager.default.getHooksController().get('triggers');
 }
 
 function getFunction(name) {
-  return _CoreManager.default.getHooksController().get("functions", name);
+  return _CoreManager.default.getHooksController().get('functions', name);
 }
 
 function getTrigger(className, triggerName) {
-  return _CoreManager.default.getHooksController().get("triggers", className, triggerName);
+  return _CoreManager.default.getHooksController().get('triggers', className, triggerName);
 }
 
 function createFunction(functionName, url) {
@@ -102,26 +102,26 @@ function remove(hook) {
 
 const DefaultController = {
   get(type, functionName, triggerName) {
-    let url = "/hooks/" + type;
+    let url = '/hooks/' + type;
 
     if (functionName) {
-      url += "/" + functionName;
+      url += '/' + functionName;
 
       if (triggerName) {
-        url += "/" + triggerName;
+        url += '/' + triggerName;
       }
     }
 
-    return this.sendRequest("GET", url);
+    return this.sendRequest('GET', url);
   },
 
   create(hook) {
     let url;
 
     if (hook.functionName && hook.url) {
-      url = "/hooks/functions";
+      url = '/hooks/functions';
     } else if (hook.className && hook.triggerName && hook.url) {
-      url = "/hooks/triggers";
+      url = '/hooks/triggers';
     } else {
       return Promise.reject({
         error: 'invalid hook declaration',
@@ -129,17 +129,17 @@ const DefaultController = {
       });
     }
 
-    return this.sendRequest("POST", url, hook);
+    return this.sendRequest('POST', url, hook);
   },
 
   remove(hook) {
     let url;
 
     if (hook.functionName) {
-      url = "/hooks/functions/" + hook.functionName;
+      url = '/hooks/functions/' + hook.functionName;
       delete hook.functionName;
     } else if (hook.className && hook.triggerName) {
-      url = "/hooks/triggers/" + hook.className + "/" + hook.triggerName;
+      url = '/hooks/triggers/' + hook.className + '/' + hook.triggerName;
       delete hook.className;
       delete hook.triggerName;
     } else {
@@ -149,8 +149,8 @@ const DefaultController = {
       });
     }
 
-    return this.sendRequest("PUT", url, {
-      "__op": "Delete"
+    return this.sendRequest('PUT', url, {
+      __op: 'Delete'
     });
   },
 
@@ -158,10 +158,10 @@ const DefaultController = {
     let url;
 
     if (hook.functionName && hook.url) {
-      url = "/hooks/functions/" + hook.functionName;
+      url = '/hooks/functions/' + hook.functionName;
       delete hook.functionName;
     } else if (hook.className && hook.triggerName && hook.url) {
-      url = "/hooks/triggers/" + hook.className + "/" + hook.triggerName;
+      url = '/hooks/triggers/' + hook.className + '/' + hook.triggerName;
       delete hook.className;
       delete hook.triggerName;
     } else {

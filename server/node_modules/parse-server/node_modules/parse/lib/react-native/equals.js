@@ -1,20 +1,24 @@
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-const toString = Object.prototype.toString;
-import ParseACL from './ParseACL';
-import ParseFile from './ParseFile';
-import ParseGeoPoint from './ParseGeoPoint';
-import ParseObject from './ParseObject';
-export default function equals(a, b) {
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = equals;
+
+var _ParseACL = _interopRequireDefault(require("./ParseACL"));
+
+var _ParseFile = _interopRequireDefault(require("./ParseFile"));
+
+var _ParseGeoPoint = _interopRequireDefault(require("./ParseGeoPoint"));
+
+var _ParseObject = _interopRequireDefault(require("./ParseObject"));
+
+function equals(a, b) {
+  var toString = Object.prototype.toString;
+
   if (toString.call(a) === '[object Date]' || toString.call(b) === '[object Date]') {
-    const dateA = new Date(a);
-    const dateB = new Date(b);
+    var dateA = new Date(a);
+    var dateB = new Date(b);
     return +dateA === +dateB;
   }
 
@@ -23,7 +27,6 @@ export default function equals(a, b) {
   }
 
   if (!a || typeof a !== 'object') {
-    // a is a primitive
     return a === b;
   }
 
@@ -36,7 +39,7 @@ export default function equals(a, b) {
       return false;
     }
 
-    for (let i = a.length; i--;) {
+    for (var i = a.length; i--;) {
       if (!equals(a[i], b[i])) {
         return false;
       }
@@ -45,11 +48,11 @@ export default function equals(a, b) {
     return true;
   }
 
-  if (a instanceof ParseACL || a instanceof ParseFile || a instanceof ParseGeoPoint || a instanceof ParseObject) {
+  if (a instanceof _ParseACL.default || a instanceof _ParseFile.default || a instanceof _ParseGeoPoint.default || a instanceof _ParseObject.default) {
     return a.equals(b);
   }
 
-  if (b instanceof ParseObject) {
+  if (b instanceof _ParseObject.default) {
     if (a.__type === 'Object' || a.__type === 'Pointer') {
       return a.objectId === b.id && a.className === b.className;
     }
@@ -59,7 +62,7 @@ export default function equals(a, b) {
     return false;
   }
 
-  for (const k in a) {
+  for (var k in a) {
     if (!equals(a[k], b[k])) {
       return false;
     }

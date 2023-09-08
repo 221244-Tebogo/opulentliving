@@ -1,29 +1,25 @@
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- */
-import ParseFile from './ParseFile';
-import ParseObject from './ParseObject';
-import ParseRelation from './ParseRelation';
-export default function canBeSerialized(obj
-/*: ParseObject*/
-)
-/*: boolean*/
-{
-  if (!(obj instanceof ParseObject)) {
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = canBeSerialized;
+
+var _ParseFile = _interopRequireDefault(require("./ParseFile"));
+
+var _ParseObject = _interopRequireDefault(require("./ParseObject"));
+
+var _ParseRelation = _interopRequireDefault(require("./ParseRelation"));
+
+function canBeSerialized(obj) {
+  if (!(obj instanceof _ParseObject.default)) {
     return true;
   }
 
-  const attributes = obj.attributes;
+  var attributes = obj.attributes;
 
-  for (const attr in attributes) {
-    const val = attributes[attr];
+  for (var attr in attributes) {
+    var val = attributes[attr];
 
     if (!canBeSerializedHelper(val)) {
       return false;
@@ -33,24 +29,20 @@ export default function canBeSerialized(obj
   return true;
 }
 
-function canBeSerializedHelper(value
-/*: any*/
-)
-/*: boolean*/
-{
+function canBeSerializedHelper(value) {
   if (typeof value !== 'object') {
     return true;
   }
 
-  if (value instanceof ParseRelation) {
+  if (value instanceof _ParseRelation.default) {
     return true;
   }
 
-  if (value instanceof ParseObject) {
+  if (value instanceof _ParseObject.default) {
     return !!value.id;
   }
 
-  if (value instanceof ParseFile) {
+  if (value instanceof _ParseFile.default) {
     if (value.url()) {
       return true;
     }
@@ -59,7 +51,7 @@ function canBeSerializedHelper(value
   }
 
   if (Array.isArray(value)) {
-    for (let i = 0; i < value.length; i++) {
+    for (var i = 0; i < value.length; i++) {
       if (!canBeSerializedHelper(value[i])) {
         return false;
       }
@@ -68,7 +60,7 @@ function canBeSerializedHelper(value
     return true;
   }
 
-  for (const k in value) {
+  for (var k in value) {
     if (!canBeSerializedHelper(value[k])) {
       return false;
     }

@@ -1,28 +1,15 @@
-/**
- * Copyright (c) 2015-present, Parse, LLC.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- */
-import CoreManager from './CoreManager';
-const Storage = {
-  async()
-  /*: boolean*/
-  {
-    const controller = CoreManager.getStorageController();
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _CoreManager = _interopRequireDefault(require("./CoreManager"));
+
+var Storage = {
+  async: function () {
+    var controller = _CoreManager.default.getStorageController();
+
     return !!controller.async;
   },
-
-  getItem(path
-  /*: string*/
-  )
-  /*: ?string*/
-  {
-    const controller = CoreManager.getStorageController();
+  getItem: function (path) {
+    var controller = _CoreManager.default.getStorageController();
 
     if (controller.async === 1) {
       throw new Error('Synchronous storage is not supported by the current storage controller');
@@ -30,13 +17,8 @@ const Storage = {
 
     return controller.getItem(path);
   },
-
-  getItemAsync(path
-  /*: string*/
-  )
-  /*: Promise<string>*/
-  {
-    const controller = CoreManager.getStorageController();
+  getItemAsync: function (path) {
+    var controller = _CoreManager.default.getStorageController();
 
     if (controller.async === 1) {
       return controller.getItemAsync(path);
@@ -44,15 +26,8 @@ const Storage = {
 
     return Promise.resolve(controller.getItem(path));
   },
-
-  setItem(path
-  /*: string*/
-  , value
-  /*: string*/
-  )
-  /*: void*/
-  {
-    const controller = CoreManager.getStorageController();
+  setItem: function (path, value) {
+    var controller = _CoreManager.default.getStorageController();
 
     if (controller.async === 1) {
       throw new Error('Synchronous storage is not supported by the current storage controller');
@@ -60,15 +35,8 @@ const Storage = {
 
     return controller.setItem(path, value);
   },
-
-  setItemAsync(path
-  /*: string*/
-  , value
-  /*: string*/
-  )
-  /*: Promise<void>*/
-  {
-    const controller = CoreManager.getStorageController();
+  setItemAsync: function (path, value) {
+    var controller = _CoreManager.default.getStorageController();
 
     if (controller.async === 1) {
       return controller.setItemAsync(path, value);
@@ -76,13 +44,8 @@ const Storage = {
 
     return Promise.resolve(controller.setItem(path, value));
   },
-
-  removeItem(path
-  /*: string*/
-  )
-  /*: void*/
-  {
-    const controller = CoreManager.getStorageController();
+  removeItem: function (path) {
+    var controller = _CoreManager.default.getStorageController();
 
     if (controller.async === 1) {
       throw new Error('Synchronous storage is not supported by the current storage controller');
@@ -90,13 +53,8 @@ const Storage = {
 
     return controller.removeItem(path);
   },
-
-  removeItemAsync(path
-  /*: string*/
-  )
-  /*: Promise<void>*/
-  {
-    const controller = CoreManager.getStorageController();
+  removeItemAsync: function (path) {
+    var controller = _CoreManager.default.getStorageController();
 
     if (controller.async === 1) {
       return controller.removeItemAsync(path);
@@ -104,13 +62,26 @@ const Storage = {
 
     return Promise.resolve(controller.removeItem(path));
   },
+  getAllKeys: function () {
+    var controller = _CoreManager.default.getStorageController();
 
-  generatePath(path
-  /*: string*/
-  )
-  /*: string*/
-  {
-    if (!CoreManager.get('APPLICATION_ID')) {
+    if (controller.async === 1) {
+      throw new Error('Synchronous storage is not supported by the current storage controller');
+    }
+
+    return controller.getAllKeys();
+  },
+  getAllKeysAsync: function () {
+    var controller = _CoreManager.default.getStorageController();
+
+    if (controller.async === 1) {
+      return controller.getAllKeysAsync();
+    }
+
+    return Promise.resolve(controller.getAllKeys());
+  },
+  generatePath: function (path) {
+    if (!_CoreManager.default.get('APPLICATION_ID')) {
       throw new Error('You need to call Parse.initialize before using Parse.');
     }
 
@@ -122,17 +93,16 @@ const Storage = {
       path = path.substr(1);
     }
 
-    return 'Parse/' + CoreManager.get('APPLICATION_ID') + '/' + path;
+    return 'Parse/' + _CoreManager.default.get('APPLICATION_ID') + '/' + path;
   },
-
-  _clear() {
-    const controller = CoreManager.getStorageController();
+  _clear: function () {
+    var controller = _CoreManager.default.getStorageController();
 
     if (controller.hasOwnProperty('clear')) {
       controller.clear();
     }
   }
-
 };
 module.exports = Storage;
-CoreManager.setStorageController(require('./StorageController.react-native'));
+
+_CoreManager.default.setStorageController(require('./StorageController.react-native'));

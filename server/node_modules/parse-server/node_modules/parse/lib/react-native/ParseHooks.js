@@ -1,86 +1,120 @@
-import CoreManager from './CoreManager';
-import decode from './decode';
-import ParseError from './ParseError';
-export function getFunctions() {
-  return CoreManager.getHooksController().get("functions");
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.create = create;
+exports.createFunction = createFunction;
+exports.createTrigger = createTrigger;
+exports.getFunction = getFunction;
+exports.getFunctions = getFunctions;
+exports.getTrigger = getTrigger;
+exports.getTriggers = getTriggers;
+exports.remove = remove;
+exports.removeFunction = removeFunction;
+exports.removeTrigger = removeTrigger;
+exports.update = update;
+exports.updateFunction = updateFunction;
+exports.updateTrigger = updateTrigger;
+
+var _CoreManager = _interopRequireDefault(require("./CoreManager"));
+
+var _decode = _interopRequireDefault(require("./decode"));
+
+var _ParseError = _interopRequireDefault(require("./ParseError"));
+
+function getFunctions() {
+  return _CoreManager.default.getHooksController().get('functions');
 }
-export function getTriggers() {
-  return CoreManager.getHooksController().get("triggers");
+
+function getTriggers() {
+  return _CoreManager.default.getHooksController().get('triggers');
 }
-export function getFunction(name) {
-  return CoreManager.getHooksController().get("functions", name);
+
+function getFunction(name) {
+  return _CoreManager.default.getHooksController().get('functions', name);
 }
-export function getTrigger(className, triggerName) {
-  return CoreManager.getHooksController().get("triggers", className, triggerName);
+
+function getTrigger(className, triggerName) {
+  return _CoreManager.default.getHooksController().get('triggers', className, triggerName);
 }
-export function createFunction(functionName, url) {
+
+function createFunction(functionName, url) {
   return create({
     functionName: functionName,
     url: url
   });
 }
-export function createTrigger(className, triggerName, url) {
+
+function createTrigger(className, triggerName, url) {
   return create({
     className: className,
     triggerName: triggerName,
     url: url
   });
 }
-export function create(hook) {
-  return CoreManager.getHooksController().create(hook);
+
+function create(hook) {
+  return _CoreManager.default.getHooksController().create(hook);
 }
-export function updateFunction(functionName, url) {
+
+function updateFunction(functionName, url) {
   return update({
     functionName: functionName,
     url: url
   });
 }
-export function updateTrigger(className, triggerName, url) {
+
+function updateTrigger(className, triggerName, url) {
   return update({
     className: className,
     triggerName: triggerName,
     url: url
   });
 }
-export function update(hook) {
-  return CoreManager.getHooksController().update(hook);
+
+function update(hook) {
+  return _CoreManager.default.getHooksController().update(hook);
 }
-export function removeFunction(functionName) {
+
+function removeFunction(functionName) {
   return remove({
     functionName: functionName
   });
 }
-export function removeTrigger(className, triggerName) {
+
+function removeTrigger(className, triggerName) {
   return remove({
     className: className,
     triggerName: triggerName
   });
 }
-export function remove(hook) {
-  return CoreManager.getHooksController().remove(hook);
+
+function remove(hook) {
+  return _CoreManager.default.getHooksController().remove(hook);
 }
-const DefaultController = {
-  get(type, functionName, triggerName) {
-    let url = "/hooks/" + type;
+
+var DefaultController = {
+  get: function (type, functionName, triggerName) {
+    var url = '/hooks/' + type;
 
     if (functionName) {
-      url += "/" + functionName;
+      url += '/' + functionName;
 
       if (triggerName) {
-        url += "/" + triggerName;
+        url += '/' + triggerName;
       }
     }
 
-    return this.sendRequest("GET", url);
+    return this.sendRequest('GET', url);
   },
-
-  create(hook) {
-    let url;
+  create: function (hook) {
+    var url;
 
     if (hook.functionName && hook.url) {
-      url = "/hooks/functions";
+      url = '/hooks/functions';
     } else if (hook.className && hook.triggerName && hook.url) {
-      url = "/hooks/triggers";
+      url = '/hooks/triggers';
     } else {
       return Promise.reject({
         error: 'invalid hook declaration',
@@ -88,17 +122,16 @@ const DefaultController = {
       });
     }
 
-    return this.sendRequest("POST", url, hook);
+    return this.sendRequest('POST', url, hook);
   },
-
-  remove(hook) {
-    let url;
+  remove: function (hook) {
+    var url;
 
     if (hook.functionName) {
-      url = "/hooks/functions/" + hook.functionName;
+      url = '/hooks/functions/' + hook.functionName;
       delete hook.functionName;
     } else if (hook.className && hook.triggerName) {
-      url = "/hooks/triggers/" + hook.className + "/" + hook.triggerName;
+      url = '/hooks/triggers/' + hook.className + '/' + hook.triggerName;
       delete hook.className;
       delete hook.triggerName;
     } else {
@@ -108,19 +141,18 @@ const DefaultController = {
       });
     }
 
-    return this.sendRequest("PUT", url, {
-      "__op": "Delete"
+    return this.sendRequest('PUT', url, {
+      __op: 'Delete'
     });
   },
-
-  update(hook) {
-    let url;
+  update: function (hook) {
+    var url;
 
     if (hook.functionName && hook.url) {
-      url = "/hooks/functions/" + hook.functionName;
+      url = '/hooks/functions/' + hook.functionName;
       delete hook.functionName;
     } else if (hook.className && hook.triggerName && hook.url) {
-      url = "/hooks/triggers/" + hook.className + "/" + hook.triggerName;
+      url = '/hooks/triggers/' + hook.className + '/' + hook.triggerName;
       delete hook.className;
       delete hook.triggerName;
     } else {
@@ -132,20 +164,19 @@ const DefaultController = {
 
     return this.sendRequest('PUT', url, hook);
   },
-
-  sendRequest(method, url, body) {
-    return CoreManager.getRESTController().request(method, url, body, {
+  sendRequest: function (method, url, body) {
+    return _CoreManager.default.getRESTController().request(method, url, body, {
       useMasterKey: true
-    }).then(res => {
-      const decoded = decode(res);
+    }).then(function (res) {
+      var decoded = (0, _decode.default)(res);
 
       if (decoded) {
         return Promise.resolve(decoded);
       }
 
-      return Promise.reject(new ParseError(ParseError.INVALID_JSON, 'The server returned an invalid response.'));
+      return Promise.reject(new _ParseError.default(_ParseError.default.INVALID_JSON, 'The server returned an invalid response.'));
     });
   }
-
 };
-CoreManager.setHooksController(DefaultController);
+
+_CoreManager.default.setHooksController(DefaultController);
