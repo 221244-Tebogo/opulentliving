@@ -1,11 +1,11 @@
 // // // ProductList.js
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import ProductCard from './ProductCard';
+import React, { useState, useEffect } from "react";
+import { axios } from "../utils/axios";
+import ProductCard from "./ProductCard";
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
-  const [formData, setFormData] = useState({ name: '', price: '' }); // Initialize form data
+  const [formData, setFormData] = useState({ name: "", price: "" }); // Initialize form data
 
   useEffect(() => {
     fetchProducts();
@@ -13,10 +13,11 @@ const ProductsList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/products');
+      const response = await axios.get("/api/product");
+      console.log("fetched product : ", response);
       setProducts(response.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     }
   };
 
@@ -30,11 +31,11 @@ const ProductsList = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5001/api/products', formData);
-      setFormData({ name: '', price: '' }); // Clear the form fields
+      await axios.post("http://localhost:5001/api/products", formData);
+      setFormData({ name: "", price: "" }); // Clear the form fields
       fetchProducts(); // Refresh the list of products
     } catch (error) {
-      console.error('Error creating product:', error);
+      console.error("Error creating product:", error);
     }
   };
 
@@ -43,7 +44,7 @@ const ProductsList = () => {
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}
-      <form onSubmit={handleFormSubmit}>
+      {/* <form onSubmit={handleFormSubmit}>
         <input
           type="text"
           name="name"
@@ -59,15 +60,12 @@ const ProductsList = () => {
           value={formData.price} // Bind input value to formData
         />
         <button type="submit">Add Product</button>
-      </form>
+      </form> */}
     </div>
   );
 };
 
 export default ProductsList;
-
-
-
 
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
@@ -142,9 +140,6 @@ export default ProductsList;
 
 // export default ProductsList;
 
-
-
-
 // // import React, { useState, useEffect } from 'react';
 // // import ProductCard from './ProductCard';
 // // import { Row } from 'react-bootstrap';
@@ -157,7 +152,6 @@ export default ProductsList;
 // //       .then(results => setProducts(results.data))
 // //       .catch((err) => console.log(err));
 // //   }, []);
-  
 
 // //   return (
 // //     <Row>

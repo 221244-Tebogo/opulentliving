@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   MDBContainer,
   MDBNavbar,
@@ -9,18 +9,18 @@ import {
   MDBNavbarItem,
   MDBNavbarLink,
   MDBCollapse,
-} from 'mdb-react-ui-kit';
-import { Link } from 'react-router-dom';
-import logo from '../assets/Opulent-logo.png';
+} from "mdb-react-ui-kit";
+import { Link } from "react-router-dom";
+import logo from "../assets/Opulent-logo.png";
 
 // Define the CSS for the navigation bar
 const navStyle = {
-  backgroundColor: '#fbf9f5', // Background color
-  color: '#627571', // Text color
+  backgroundColor: "#fbf9f5", // Background color
+  color: "#627571", // Text color
 };
 
 const navLinkStyle = {
-  color: '#627571', // Text color for links
+  color: "#627571", // Text color for links
 };
 
 export default function Navbar({ setDisplayProducts }) {
@@ -31,7 +31,9 @@ export default function Navbar({ setDisplayProducts }) {
   };
 
   return (
-    <MDBNavbar expand="lg" light style={navStyle}> {/* Apply the defined styles */}
+    <MDBNavbar expand="lg" light style={navStyle}>
+      {" "}
+      {/* Apply the defined styles */}
       <MDBContainer fluid>
         <MDBNavbarBrand href="#">
           <img src={logo} alt="Logo" height="30" />
@@ -57,16 +59,27 @@ export default function Navbar({ setDisplayProducts }) {
               <MDBNavbarLink href="#">About Us</MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link to="/form" className="nav-link" style={navLinkStyle}>Products</Link>
+              {/* <Link to="/form" className="nav-link" style={navLinkStyle}></Link> */}
+              <Link
+                to="/product-list"
+                className="nav-link"
+                style={navLinkStyle}
+              >
+                Products
+              </Link>
               {/* Use Link to navigate to the "/form" route */}
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link to="/cart" className="nav-link" style={navLinkStyle}>Cart</Link>
+              <Link to="/cart" className="nav-link" style={navLinkStyle}>
+                Cart
+              </Link>
               {/* Add a link to the Cart page */}
             </MDBNavbarItem>
           </MDBNavbarNav>
 
-          <form className="d-flex input-group w-auto">{/* ... Search input and button ... */}</form>
+          <form className="d-flex input-group w-auto">
+            {/* ... Search input and button ... */}
+          </form>
 
           <MDBIcon icon="shopping-cart" size="lg" className="mx-3" />
         </MDBCollapse>
